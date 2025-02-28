@@ -74,7 +74,7 @@ const ChatBot = () => {
         <Hovermessage showMessage={showMessage} />
         <Top />
         <div
-          className="flex-1 flex flex-col w-full max-w-3xl mx-auto p-2 md:p-4 overflow-hidden"
+          className="flex-1 flex flex-col w-full max-w-4xl mx-auto p-2 md:p-4 overflow-hidden"
           onMouseEnter={() => !isMobile && setShowMessage(true)}
           onMouseLeave={() => !isMobile && setShowMessage(false)}
         >
