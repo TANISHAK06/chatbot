@@ -20,6 +20,16 @@ const Footer = () => {
             <span className="mx-2">|</span>
             Backend crafted by{" "}
             <span className="group relative inline-block font-medium text-purple-700 cursor-pointer">
+              Aashish Ranjan
+              <span className="invisible group-hover:visible absolute -top-16 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-white bg-opacity-90 text-purple-600 text-xs rounded-md shadow-md transition-all duration-200 whitespace-nowrap">
+                <div className="flex flex-col items-center space-y-1">
+                  <span>aashish.ranjan@teliolabs.com</span>
+                  <span>+91 8709038042</span>
+                </div>
+              </span>
+            </span>{" "}
+            ,{" "}
+            <span className="group relative inline-block font-medium text-purple-700 cursor-pointer">
               Srivishnu
               <span className="invisible group-hover:visible absolute -top-16 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-white bg-opacity-90 text-purple-600 text-xs rounded-md shadow-md transition-all duration-200 whitespace-nowrap">
                 <div className="flex flex-col items-center space-y-1">
@@ -27,7 +37,7 @@ const Footer = () => {
                   <span>+91 8300931312</span>
                 </div>
               </span>
-            </span>{" "}
+            </span>
             &{" "}
             <span className="group relative inline-block font-medium text-indigo-700 cursor-pointer">
               Tanishak
