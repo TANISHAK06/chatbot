@@ -1,10 +1,39 @@
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 
 const Messages = ({ messages, loading }) => {
   const messagesEndRef = useRef(null);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Helper function to detect if text has table format and convert it
+  const formatMessageText = (text) => {
+    // Only apply markdown conversion if the text contains a table pattern
+    if (typeof text === "string" && text.includes("|") && text.includes("\n")) {
+      return (
+        <ReactMarkdown
+          components={{
+            table: ({ ...props }) => (
+              <table className="border-collapse w-full my-2" {...props} />
+            ),
+            th: ({ ...props }) => (
+              <th
+                className="border border-gray-300 px-2 py-1 bg-gray-50"
+                {...props}
+              />
+            ),
+            td: ({ ...props }) => (
+              <td className="border border-gray-300 px-2 py-1" {...props} />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
+      );
+    }
+    return text;
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-2 md:p-3 space-y-3 md:space-y-4 mb-3 md:mb-4 rounded-lg bg-white bg-opacity-60 backdrop-blur-sm shadow-inner">
@@ -30,7 +59,7 @@ const Messages = ({ messages, loading }) => {
                   : "bg-white text-gray-800 rounded-bl-none shadow-md"
               }`}
             >
-              {msg.text}
+              {formatMessageText(msg.text)}
             </div>
             {msg.sender === "user" && <span className="text-lg">🤵</span>}
           </div>
