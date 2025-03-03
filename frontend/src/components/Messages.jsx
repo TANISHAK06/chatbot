@@ -1,35 +1,66 @@
 import { useEffect, useRef } from "react";
-import ReactMarkdown from "react-markdown";
 
 const Messages = ({ messages, loading }) => {
   const messagesEndRef = useRef(null);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Simpler function to convert markdown table text to HTML
   const formatMessageText = (text) => {
-    if (typeof text === "string" && text.includes("|") && text.includes("\n")) {
-      return (
-        <ReactMarkdown
-          components={{
-            table: ({ ...props }) => (
-              <table className="border-collapse w-full my-2" {...props} />
-            ),
-            th: ({ ...props }) => (
-              <th
-                className="border border-gray-300 px-2 py-1 bg-gray-50"
-                {...props}
-              />
-            ),
-            td: ({ ...props }) => (
-              <td className="border border-gray-300 px-2 py-1" {...props} />
-            ),
-          }}
-        >
-          {text}
-        </ReactMarkdown>
+    if (typeof text !== "string") return text;
+
+    // Check if text contains what appears to be a markdown table
+    if (text.includes("|") && text.includes("\n")) {
+      // Process the text to convert tables to HTML
+      const processedText = text.replace(
+        /(\|.*\|\n\|[-:\s|]*\|\n)(\|.*\|\n)+/g,
+        (match) => {
+          // Split the table into rows
+          const rows = match
+            .split("\n")
+            .filter(
+              (row) => row.trim().startsWith("|") && row.trim().endsWith("|")
+            );
+
+          // Build the HTML table
+          let tableHtml = '<table class="border-collapse w-full my-2">';
+
+          rows.forEach((row, rowIndex) => {
+            // Skip separator rows
+            if (
+              row.replace(/\|/g, "").trim().replace(/-/g, "").replace(/:/g, "")
+                .length === 0
+            ) {
+              return;
+            }
+
+            const cells = row.split("|").filter((cell) => cell !== "");
+            if (cells.length > 0) {
+              tableHtml += "<tr>";
+              const cellType = rowIndex === 0 ? "th" : "td";
+              const cellStyle =
+                rowIndex === 0
+                  ? "border border-gray-300 px-2 py-1 bg-gray-50"
+                  : "border border-gray-300 px-2 py-1";
+
+              cells.forEach((cell) => {
+                tableHtml += `<${cellType} class="${cellStyle}">${cell.trim()}</${cellType}>`;
+              });
+
+              tableHtml += "</tr>";
+            }
+          });
+
+          tableHtml += "</table>";
+          return tableHtml;
+        }
       );
+
+      return <div dangerouslySetInnerHTML={{ __html: processedText }} />;
     }
+
     return text;
   };
 
