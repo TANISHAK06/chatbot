@@ -7,9 +7,7 @@ const Messages = ({ messages, loading }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Helper function to detect if text has table format and convert it
   const formatMessageText = (text) => {
-    // Only apply markdown conversion if the text contains a table pattern
     if (typeof text === "string" && text.includes("|") && text.includes("\n")) {
       return (
         <ReactMarkdown
